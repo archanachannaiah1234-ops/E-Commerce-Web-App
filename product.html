@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Product Details</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav>
+
+        <h2>🛍️ My Online Store</h2>
+
+        <div>
+
+            <a href="index.html">Home</a>
+
+            <a href="index.html#products">Products</a>
+
+            <a href="cart.html">
+                Cart (<span id="cart-count">0</span>)
+            </a>
+
+            <a href="orders.html">Orders</a>
+
+            <a href="login.html">Login</a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Product Details -->
+
+    <section class="product-details-section">
+
+        <div class="product-details-card">
+
+            <img
+                id="detail-image"
+                src=""
+                alt="Product"
+            >
+
+            <div class="product-details-info">
+
+                <h1 id="detail-name"></h1>
+
+                <div
+                    id="detail-rating"
+                    class="rating">
+                </div>
+
+                <p id="detail-description"></p>
+
+                <h2 id="detail-price"></h2>
+
+                <button id="detail-add-cart">
+                    🛒 Add to Cart
+                </button>
+
+                <button id="detail-buy-now">
+                    ⚡ Buy Now
+                </button>
+
+                <br><br>
+
+                <a href="index.html#products">
+                    ← Back to Products
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <script>
+
+        // Product information
+
+        const productData = {
+
+            smartphone: {
+                name: "Smartphone",
+                price: "₹20,000",
+                image: "image/smartphone.jpg",
+                rating: "⭐⭐⭐⭐⭐",
+                description:
+                    "Latest smartphone with modern features."
+            },
+
+            headphones: {
+                name: "Headphones",
+                price: "₹2,000",
+                image: "image/headphones.jpg",
+                rating: "⭐⭐⭐⭐☆",
+                description:
+                    "Wireless headphones with clear sound."
+            },
+
+            laptop: {
+                name: "Laptop",
+                price: "₹50,000",
+                image: "image/laptop.jpg",
+                rating: "⭐⭐⭐⭐⭐",
+                description:
+                    "Powerful laptop for study and work."
+            },
+
+            smartwatch: {
+                name: "Smart Watch",
+                price: "₹3,000",
+                image: "image/smartwatch.jpg",
+                rating: "⭐⭐⭐⭐☆",
+                description:
+                    "Smart watch with fitness features."
+            }
+
+        };
+
+
+        // Get product name from URL
+
+        const urlParams =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        const productId =
+            urlParams.get("product");
+
+
+        // Select product
+
+        const product =
+            productData[productId];
+
+
+        // Display product
+
+        if (product) {
+
+            document.getElementById(
+                "detail-image"
+            ).src = product.image;
+
+            document.getElementById(
+                "detail-image"
+            ).alt = product.name;
+
+            document.getElementById(
+                "detail-name"
+            ).textContent = product.name;
+
+            document.getElementById(
+                "detail-rating"
+            ).textContent = product.rating;
+
+            document.getElementById(
+                "detail-description"
+            ).textContent = product.description;
+
+            document.getElementById(
+                "detail-price"
+            ).textContent = product.price;
+
+
+            // Add to cart
+
+            document.getElementById(
+                "detail-add-cart"
+            ).addEventListener(
+                "click",
+                function() {
+
+                    let cart =
+                        JSON.parse(
+                            localStorage.getItem("cart")
+                        ) || [];
+
+
+                    const existing =
+                        cart.find(
+                            function(item) {
+                                return item.name === product.name;
+                            }
+                        );
+
+
+                    if (existing) {
+
+                        existing.quantity++;
+
+                    } else {
+
+                        cart.push({
+
+                            name: product.name,
+
+                            price: product.price,
+
+                            quantity: 1
+
+                        });
+                    }
+
+
+                    localStorage.setItem(
+                        "cart",
+                        JSON.stringify(cart)
+                    );
+
+
+                    alert(
+                        product.name +
+                        " added to cart! 🛒"
+                    );
+
+                }
+            );
+
+
+            // Buy Now
+
+            document.getElementById(
+                "detail-buy-now"
+            ).addEventListener(
+                "click",
+                function() {
+
+                    let cart =
+                        JSON.parse(
+                            localStorage.getItem("cart")
+                        ) || [];
+
+
+                    const existing =
+                        cart.find(
+                            function(item) {
+                                return item.name === product.name;
+                            }
+                        );
+
+
+                    if (existing) {
+
+                        existing.quantity++;
+
+                    } else {
+
+                        cart.push({
+
+                            name: product.name,
+
+                            price: product.price,
+
+                            quantity: 1
+
+                        });
+                    }
+
+
+                    localStorage.setItem(
+                        "cart",
+                        JSON.stringify(cart)
+                    );
+
+
+                    window.location.href =
+                        "checkout.html";
+
+                }
+            );
+
+        }
+
+    </script>
+
+</body>
+
+</html>

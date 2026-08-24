@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Orders</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#f3f5f7;
+}
+nav{
+    background:#18202b;
+    color:white;
+    padding:18px 6%;
+}
+nav a{
+    color:white;
+    margin-left:20px;
+    text-decoration:none;
+}
+.container{
+    width:90%;
+    max-width:900px;
+    margin:30px auto;
+}
+.order{
+    background:white;
+    padding:25px;
+    margin:20px 0;
+    border-radius:12px;
+    box-shadow:0 3px 12px #0002;
+}
+.item{
+    border-top:1px solid #ddd;
+    padding:12px 0;
+}
+.status{
+    display:inline-block;
+    padding:8px 12px;
+    border-radius:6px;
+    background:#eee;
+    font-weight:bold;
+}
+button{
+    padding:10px 15px;
+    border:0;
+    border-radius:6px;
+    background:#18202b;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+
+<strong>📦 My Online Store</strong>
+
+<a href="index.html">Home</a>
+
+<a href="orders.html">My Orders</a>
+
+<a href="login.html" onclick="logout()">Logout</a>
+
+</nav>
+
+<div class="container">
+
+<h1>📦 Order History</h1>
+
+<div id="orders">
+Loading orders...
+</div>
+
+</div>
+
+<script>
+
+const API="http://localhost:5000/api";
+
+async function loadOrders(){
+
+    const token=localStorage.getItem("token");
+
+    if(!token){
+
+        document.getElementById("orders").innerHTML=
+            "<p>Please login to see your orders.</p>";
+
+        return;
+    }
+
+    try{
+
+        const response=await fetch(
+            API+"/orders/my",
+            {
+                headers:{
+                    "Authorization":"Bearer "+token
+                }
+            }
+        );
+
+        const data=await response.json();
+
+        if(!response.ok){
+
+            document.getElementById("orders").innerHTML=
+                "<p>"+(data.message||"Unable to load orders.")+"</p>";
+
+            return;
+        }
+
+        const orders=
+            Array.isArray(data)
+            ? data
+            : data.orders || [];
+
+        if(orders.length===0){
+
+            document.getElementById("orders").innerHTML=
+                "<h3>No orders yet.</h3>";
+
+            return;
+        }
+
+        document.getElementById("orders").innerHTML=
+            orders.map((order,index)=>{
+
+                const items=order.items || [];
+
+                return `
+
+                <div class="order">
+
+                    <h2>📦 Order #${index+1}</h2>
+
+                    <p>
+                        <strong>Order ID:</strong>
+                        ${order._id || order.id || "N/A"}
+                    </p>
+
+                    <p>
+                        <strong>Date:</strong>
+                        ${
+                            order.createdAt
+                            ? new Date(order.createdAt).toLocaleString()
+                            : "N/A"
+                        }
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        <span class="status">
+                            ${order.status || "Pending"}
+                        </span>
+                    </p>
+
+                    ${
+                        order.customerName
+                        ? `<p><strong>Customer:</strong> ${order.customerName}</p>`
+                        : ""
+                    }
+
+                    ${
+                        order.address
+                        ? `<p><strong>Address:</strong> ${order.address}</p>`
+                        : ""
+                    }
+
+                    ${
+                        order.phone
+                        ? `<p><strong>Phone:</strong> ${order.phone}</p>`
+                        : ""
+                    }
+
+                    <h3>Products</h3>
+
+                    ${
+                        items.map(item=>`
+
+                        <div class="item">
+
+                            <strong>
+                                ${item.name || item.productName || "Product"}
+                            </strong>
+
+                            <p>
+                                Price: ₹${item.price || 0}
+                            </p>
+
+                            <p>
+                                Quantity: ${item.quantity || 1}
+                            </p>
+
+                        </div>
+
+                        `).join("")
+                    }
+
+                    <h2>
+                        Total: ₹${order.total || order.totalAmount || 0}
+                    </h2>
+
+                </div>
+
+                `;
+
+            }).join("");
+
+    }catch(error){
+
+        console.log(error);
+
+        document.getElementById("orders").innerHTML=
+            "<p>Server connection error.</p>";
+    }
+}
+
+function logout(){
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+}
+
+loadOrders();
+
+</script>
+
+</body>
+</html>

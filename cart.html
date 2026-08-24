@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shopping Cart</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav>
+
+        <h2>🛍️ My Online Store</h2>
+
+        <div>
+
+            <a href="index.html">Home</a>
+
+            <a href="index.html#products">Products</a>
+
+            <a href="cart.html">
+                Cart (<span id="cart-count">0</span>)
+            </a>
+
+            <a href="orders.html">Orders</a>
+
+            <a href="login.html">Login</a>
+
+        </div>
+
+    </nav>
+
+
+    <section class="cart-section">
+
+        <h1>🛒 Shopping Cart</h1>
+
+        <div id="cart-items"></div>
+
+        <h2 id="total-price">
+            Total: ₹0
+        </h2>
+
+        <button
+            id="clear-cart-btn"
+            class="clear-cart-btn">
+            🗑️ Clear Cart
+        </button>
+
+        <button
+            id="checkout-btn"
+            class="checkout-btn">
+            💳 Proceed to Checkout
+        </button>
+
+    </section>
+
+
+    <script>
+
+        // Read cart directly from localStorage
+
+        let cart =
+            JSON.parse(
+                localStorage.getItem("cart")
+            ) || [];
+
+
+        const cartItems =
+            document.getElementById(
+                "cart-items"
+            );
+
+        const totalPrice =
+            document.getElementById(
+                "total-price"
+            );
+
+        const cartCount =
+            document.getElementById(
+                "cart-count"
+            );
+
+
+        // Display cart
+
+        function showCart() {
+
+            cartItems.innerHTML = "";
+
+            let total = 0;
+
+            let count = 0;
+
+
+            if (cart.length === 0) {
+
+                cartItems.innerHTML = `
+                    <div class="cart-item">
+                        <h3>Your cart is empty 🛒</h3>
+                    </div>
+                `;
+
+            }
+
+
+            cart.forEach(
+                function(product, index) {
+
+                    const price =
+                        parseInt(
+                            product.price.replace(
+                                /[₹,]/g,
+                                ""
+                            )
+                        );
+
+
+                    total +=
+                        price *
+                        product.quantity;
+
+
+                    count +=
+                        product.quantity;
+
+
+                    const item =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    item.className =
+                        "cart-item";
+
+
+                    item.innerHTML = `
+
+                        <h3>
+                            ${product.name}
+                        </h3>
+
+                        <p>
+                            Price:
+                            ${product.price}
+                        </p>
+
+                        <p>
+                            Quantity:
+                            ${product.quantity}
+                        </p>
+
+                        <button
+                            onclick="increase(${index})">
+                            +
+                        </button>
+
+                        <button
+                            onclick="decrease(${index})">
+                            -
+                        </button>
+
+                        <button
+                            onclick="removeItem(${index})">
+                            Remove
+                        </button>
+
+                    `;
+
+
+                    cartItems.appendChild(item);
+
+                }
+            );
+
+
+            totalPrice.textContent =
+                "Total: ₹" + total;
+
+
+            cartCount.textContent =
+                count;
+
+        }
+
+
+        // Increase
+
+        function increase(index) {
+
+            cart[index].quantity++;
+
+            saveCart();
+
+        }
+
+
+        // Decrease
+
+        function decrease(index) {
+
+            if (
+                cart[index].quantity > 1
+            ) {
+
+                cart[index].quantity--;
+
+            } else {
+
+                cart.splice(index, 1);
+
+            }
+
+            saveCart();
+
+        }
+
+
+        // Remove
+
+        function removeItem(index) {
+
+            cart.splice(index, 1);
+
+            saveCart();
+
+        }
+
+
+        // Save cart
+
+        function saveCart() {
+
+            localStorage.setItem(
+                "cart",
+                JSON.stringify(cart)
+            );
+
+            showCart();
+
+        }
+
+
+        // Clear cart
+
+        document
+            .getElementById(
+                "clear-cart-btn"
+            )
+            .addEventListener(
+                "click",
+                function() {
+
+                    cart = [];
+
+                    localStorage.removeItem(
+                        "cart"
+                    );
+
+                    showCart();
+
+                }
+            );
+
+
+        // Checkout
+
+        document
+            .getElementById(
+                "checkout-btn"
+            )
+            .addEventListener(
+                "click",
+                function() {
+
+                    if (cart.length === 0) {
+
+                        alert(
+                            "Your cart is empty! 🛒"
+                        );
+
+                        return;
+                    }
+
+
+                    window.location.href =
+                        "checkout.html";
+
+                }
+            );
+
+
+        // First display
+
+        showCart();
+
+    </script>
+
+</body>
+
+</html>

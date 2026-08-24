@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>E-Commerce Web Application</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+
+        <h2>🛍️ My Online Store</h2>
+
+        <div>
+
+            <a href="index.html">Home</a>
+
+            <a href="index.html#products">
+                Products
+            </a>
+
+            <a href="cart.html">
+                Cart (<span id="cart-count">0</span>)
+            </a>
+
+            <a href="orders.html">
+                Orders
+            </a>
+
+            <a href="login.html">
+                Login
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Welcome Section -->
+    <section class="welcome">
+
+        <h1>Welcome to Our Online Store</h1>
+
+        <p>
+            Browse our products and shop online.
+        </p>
+
+    </section>
+
+
+    <!-- Search and Category -->
+    <section class="search-section">
+
+        <input
+            type="text"
+            id="search-input"
+            placeholder="🔎 Search products..."
+        >
+
+        <select id="category-filter">
+
+            <option value="all">
+                All Products
+            </option>
+
+            <option value="electronics">
+                Electronics
+            </option>
+
+            <option value="accessories">
+                Accessories
+            </option>
+
+        </select>
+
+    </section>
+
+
+    <!-- Products -->
+    <section class="products" id="products">
+
+        <h2>Our Products</h2>
+
+        <div class="product-container">
+
+
+            <!-- Smartphone -->
+            <div
+                class="product-card"
+                data-category="electronics"
+            >
+
+                <a
+                    href="product.html?product=smartphone"
+                    class="product-link"
+                >
+
+                    <img
+                        src="image/smartphone.jpg"
+                        alt="Smartphone"
+                    >
+
+                    <h3>Smartphone</h3>
+
+                </a>
+
+                <div class="rating">
+                    ⭐⭐⭐⭐⭐
+                </div>
+
+                <p>
+                    Latest smartphone with modern features.
+                </p>
+
+                <h4>₹20,000</h4>
+
+                <button class="add-cart-btn">
+                    Add to Cart
+                </button>
+
+                <button class="buy-now-btn">
+                    Buy Now
+                </button>
+
+            </div>
+
+
+            <!-- Headphones -->
+            <div
+                class="product-card"
+                data-category="accessories"
+            >
+
+                <a
+                    href="product.html?product=headphones"
+                    class="product-link"
+                >
+
+                    <img
+                        src="image/headphones.jpg"
+                        alt="Headphones"
+                    >
+
+                    <h3>Headphones</h3>
+
+                </a>
+
+                <div class="rating">
+                    ⭐⭐⭐⭐☆
+                </div>
+
+                <p>
+                    Wireless headphones with clear sound.
+                </p>
+
+                <h4>₹2,000</h4>
+
+                <button class="add-cart-btn">
+                    Add to Cart
+                </button>
+
+                <button class="buy-now-btn">
+                    Buy Now
+                </button>
+
+            </div>
+
+
+            <!-- Laptop -->
+            <div
+                class="product-card"
+                data-category="electronics"
+            >
+
+                <a
+                    href="product.html?product=laptop"
+                    class="product-link"
+                >
+
+                    <img
+                        src="image/laptop.jpg"
+                        alt="Laptop"
+                    >
+
+                    <h3>Laptop</h3>
+
+                </a>
+
+                <div class="rating">
+                    ⭐⭐⭐⭐⭐
+                </div>
+
+                <p>
+                    Powerful laptop for study and work.
+                </p>
+
+                <h4>₹50,000</h4>
+
+                <button class="add-cart-btn">
+                    Add to Cart
+                </button>
+
+                <button class="buy-now-btn">
+                    Buy Now
+                </button>
+
+            </div>
+
+
+            <!-- Smart Watch -->
+            <div
+                class="product-card"
+                data-category="accessories"
+            >
+
+                <a
+                    href="product.html?product=smartwatch"
+                    class="product-link"
+                >
+
+                    <img
+                        src="image/smartwatch.jpg"
+                        alt="Smart Watch"
+                    >
+
+                    <h3>Smart Watch</h3>
+
+                </a>
+
+                <div class="rating">
+                    ⭐⭐⭐⭐☆
+                </div>
+
+                <p>
+                    Smart watch with fitness features.
+                </p>
+
+                <h4>₹3,000</h4>
+
+                <button class="add-cart-btn">
+                    Add to Cart
+                </button>
+
+                <button class="buy-now-btn">
+                    Buy Now
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
